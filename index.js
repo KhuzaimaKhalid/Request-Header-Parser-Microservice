@@ -20,8 +20,41 @@ app.get('/', function (req, res) {
 });
 
 // your first API endpoint...
-app.get('/api/hello', function (req, res) {
-  res.json({ greeting: 'hello API' });
+app.get('/api/whoami', function (req, res) {
+  let ipaddress = req.headers['x-forwarded-for'] || 
+                  req.connection.remoteAddress || 
+                  req.socket.remoteAddress ||
+                  req.ip || '';
+  
+  if (ipaddress) {
+    ipaddress = ipaddress.split(',')[0].trim();
+    if (ipaddress.startsWith('::ffff:')) {
+      ipaddress = ipaddress.replace('::ffff:', '');
+    }
+  }
+
+  // Get language - properly parse Accept-Language header
+  let language = req.headers['accept-language'] || '';
+  if (language) {
+    // Split by comma, take first, then split by semicolon and take first part
+    language = language.split(',')[0].split(';')[0].trim();
+  }
+
+  // Get software (User-Agent)
+  const software = req.headers['user-agent'] || '';
+
+  // Send response with no-cache headers
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+  
+  res.json({
+    ipaddress: ipaddress,
+    language: language,
+    software: software
+  });
 });
 
 // listen for requests :)
