@@ -3,8 +3,8 @@
 A simple Node.js microservice that parses HTTP request headers and returns client information in JSON format. Built as part of the freeCodeCamp Back End Development and APIs curriculum.
 
 ## 🚀 Live Demo
+https://github.com/KhuzaimaKhalid/Request-Header-Parser-Microservice
 
-[View Live Application](https://your-app-url.glitch.me)
 
 ## 📋 Features
 
